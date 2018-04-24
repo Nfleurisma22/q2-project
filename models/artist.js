@@ -1,14 +1,14 @@
 // models/artist.js
-
+const knex = require('../database');
 const uuid = require('uuid/v1');
 const fs = require('fs');
 const path = require('path');
 const artistsPath = path.join(__dirname, '..', 'data', 'artists.json');
 
 const readAll = () => {
-  const artistsJSON = fs.readFileSync(artistsPath, 'utf8');
-  const artists = JSON.parse(artistsJSON);
-  return artists;
+  return knex('artists')
+  .then( rows => rows)
+  .catch( error => { console.error( error ); });
 }
 
 const readIndividual = (id) => {

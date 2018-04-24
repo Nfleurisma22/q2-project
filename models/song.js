@@ -1,3 +1,4 @@
+const knex = require('../database');
 const uuid = require('uuid/v1');
 const fs = require('fs');
 const path = require('path');
@@ -21,7 +22,8 @@ const create = (artist_id, song) => {
   songs.push(song);
   artists[artistIndex].song_ids.push(song.id);
   fs.writeFileSync(artistsPath, JSON.stringify(artists));
-  fs.writeFileSync(songsPath, JSON.stringify(songs));
+  fs.writeFileSync(songsPath, JSON.stringify(songs
+  ));
   return song;
 }
 

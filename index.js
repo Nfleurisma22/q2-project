@@ -2,9 +2,10 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3002;
 const morgan = require('morgan');
+const cors = require('cors');
 const artistRoutes = require('./routes/artists');
 const songRoutes = require('./routes/songs');
-
+app.use(cors());
 app.use(express.json()); // Body parser!
 app.use(morgan('combined'));
 

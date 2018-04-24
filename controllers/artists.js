@@ -1,8 +1,9 @@
 const artistModel = require('../models/artist');
 
 const readAll = (request, response) => {
-  const artists = artistModel.readAll();
-  response.send(artists);
+  artistModel.readAll ()
+  .then( result => {response.send( result);})
+  .catch( error => {console.error( error); });
 }
 
 const readIndividual = (request, response) => {
