@@ -11,58 +11,42 @@ const readAll = () => {
   .catch( error => { console.error( error ); });
 }
 
-const readIndividual = (id) => {
-  const artistsJSON = fs.readFileSync(artistsPath, 'utf8');
-  const artists = JSON.parse(artistsJSON);
-  const filteredArtists = artists.filter( artist => artist.id === id);
-  const artist = filteredArtists[0];
-  return artist;
+const readOne = artist_id => {
+  return knex('artists').where('id', artist_id)
+    .then( rows => rows[0] )
+    .catch( error => { console.error(error); })
 }
 
-const create = (artist) => {
-  const artistsJSON = fs.readFileSync(artistsPath, 'utf8');
-  const artists = JSON.parse(artistsJSON);
-  artist.id = uuid();
-  artist.song_ids = [];
-  artists.push(artist);
-  fs.writeFileSync(artistsPath, JSON.stringify(artists));
-  return artist;
+const create = ({title, content}) => {
+  return knex('artists')
+    .returning('*')
+    .insert({ title, content })
+    .then( row => row[0] )
+    .catch( error => { console.error(error); });
 }
 
-const update = (id, updates) => {
-  let result;
-  const artistsJSON = fs.readFileSync(artistsPath, 'utf8');
-  const artists = JSON.parse(artistsJSON);
-  const updatedArtists = artists.map( artist => {
-    if (artist.id === id) {
-      result = { ...artist, ...updates }; // we have a match and we transform artist
-      return result;
-    } else {
-      return artist;
-    }
-  });
-  fs.writeFileSync(artistsPath, JSON.stringify(updatedArtists));
-  return result;
+const update = (artist_id, updates) => {
+  return knex('artist')
+    .returning('*')
+    .update({...updates, updated_at: new Date( Date.now()).toISOString() })
+    .where('id', artist_id)
+    .then( row => row[0] )
+    .catch( error => { console.error( error ); });
 }
 
-const destroy = (id) => {
-  let result;
-  const artistsJSON = fs.readFileSync(artistsPath, 'utf8');
-  const artists = JSON.parse(artistsJSON);
-  const remainingArtists = artists.filter( artist => {
-    if ( artist.id === id ) {
-      result = artist;
-    }
-    return artist.id !== id;
-  }) ;
-  fs.writeFileSync(artistsPath, JSON.stringify(remainingArtists));
-  return result;
+const destroy = artist_id => {
+  return knex('artists')
+    .returning('*')
+    .del()
+    .where('id', artist_id)
+    .then( row => row[0] )
+    .catch( error => { console.error( error ); })
 }
 
 module.exports = {
   readAll,
-  readIndividual,
+  readOne,
   create,
   update,
   destroy
-};
+}
