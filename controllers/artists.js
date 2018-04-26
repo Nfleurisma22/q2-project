@@ -2,28 +2,38 @@ const artistModel = require('../models/artist');
 
 const readAll = (request, response) => {
   artistModel.readAll()
-  .then( result => {response.send( result);})
-  .catch( error => {console.error( error); });
+  .then(result => {
+             response.json(result);
+         })
+         .catch(error => {
+             console.error(error);
+         });
 }
 
 const readIndividual = (request, response) => {
-  const artist = artistModel.readIndividual(request.params.id);
-  response.send(artist);
+    artistModel.readIndividual(request.params.artist_id)
+        .then(result => {
+            response.json( result );
+        })
+        .catch(error => {console.error(error);});
 }
-
 const create = (request, response) => {
-  const artist = artistModel.create(request.body);
-  response.send(artist);
+  artistModel.create(request.body)
+  .then( result => { response.json( result ); })
+        .catch( error => { console.error( error ); })
 }
 
 const update = (request, response) => {
-  const artist = artistModel.update(request.params.id, request.body);
-  response.send(artist);
+  artistModel.update(request.params.artist_id, request.body)
+  .then( result => { response.json( result ); })
+          .catch(error => { console.error( error ); })
+
 }
 
 const destroy = (request, response) => {
-  const artist = artistModel.destroy(request.params.id);
-  response.send(artist);
+  artistModel.destroy(request.params.artist_id)
+  .then( result => {response.send( result);})
+  .catch( error => {console.error( error); });
 }
 
 module.exports = {
