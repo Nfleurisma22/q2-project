@@ -17,16 +17,16 @@ const readIndividual = artist_id => {
     .catch( error => { console.error(error); })
 }
 
-const create = ({title, content}) => {
+const create = ({name, country}) => {
   return knex('artists')
     .returning('*')
-    .insert({ title, content })
+    .insert({ name, country })
     .then( row => row[0] )
     .catch( error => { console.error(error); });
 }
 
 const update = (artist_id, updates) => {
-  return knex('artist')
+  return knex('artists')
     .returning('*')
     .update({...updates, updated_at: new Date( Date.now()).toISOString() })
     .where('id', artist_id)
