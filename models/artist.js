@@ -11,7 +11,7 @@ const readAll = () => {
   .catch( error => { console.error( error ); });
 }
 
-const readOne = artist_id => {
+const readIndividual = artist_id => {
   return knex('artists').where('id', artist_id)
     .then( rows => rows[0] )
     .catch( error => { console.error(error); })
@@ -45,7 +45,7 @@ const destroy = artist_id => {
 
 module.exports = {
   readAll,
-  readOne,
+  readIndividual,
   create,
   update,
   destroy

@@ -11,7 +11,7 @@ const readAll = (request, response) => {
 }
 
 const readIndividual = (request, response) => {
-    artistModel.readIndividual(request.params.artist_id)
+    artistModel.readIndividual(request.params.id)
         .then(result => {
             response.json( result );
         })
@@ -24,14 +24,14 @@ const create = (request, response) => {
 }
 
 const update = (request, response) => {
-  artistModel.update(request.params.artist_id, request.body)
+  artistModel.update(request.params.id, request.body)
   .then( result => { response.json( result ); })
           .catch(error => { console.error( error ); })
 
 }
 
 const destroy = (request, response) => {
-  artistModel.destroy(request.params.artist_id)
+  artistModel.destroy(request.params.id)
   .then( result => {response.send( result);})
   .catch( error => {console.error( error); });
 }
